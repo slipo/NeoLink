@@ -41,6 +41,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       const address = state.account && state.account.address ? state.account.address : null
 
       sendResponse({
+        'type': 'NEOLINK_GET_EXTENSION_STATUS_RESPONSE',
         'msg': 'extension is online',
         'isLoggedIn': address !== null,
         'extensionInstalled': true,
