@@ -34,4 +34,20 @@ promisifyAll(chrome.storage, [
   'local',
 ])
 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === 'NEOLINK_GET_EXTENSION_STATUS') {
+    chrome.storage.local.get('state', (obj) => {
+      const state = JSON.parse(obj.state)
+      const address = state.account && state.account.address ? state.account.address : null
+
+      sendResponse({
+        'msg': 'extension is online',
+        'isLoggedIn': address !== null,
+        'extensionInstalled': true,
+        'address': address,
+      })
+    })
+  }
+})
+
 require('./background/popupWindow')

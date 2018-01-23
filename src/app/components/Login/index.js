@@ -65,8 +65,10 @@ export default class Login extends Component {
         const { actions } = this.props
 
         const wif = wallet.decrypt(encryptedWif, passPhrase)
+        const account = new wallet.Account(wif)
+
         this.setState({ loading: false })
-        actions.setAccount(wif)
+        actions.setAccount(wif, account.address)
       } catch (e) {
         this.setState({ loading: false, errorMsg: e.message })
       }
