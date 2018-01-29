@@ -18,7 +18,7 @@ export function callInvoke (networkUrl, account, input) {
     const args = []
     txArgs.forEach((arg) => {
       if (arg) {
-        args.push(string2Hex(arg))
+        args.push(arg)
       }
     })
 
