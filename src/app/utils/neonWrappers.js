@@ -1,4 +1,5 @@
 import Neon, { api } from '@cityofzion/neon-js'
+import { toNumber } from './math'
 
 function string2Hex(tmp) {
   let str = ''
@@ -30,7 +31,7 @@ export function callInvoke (networkUrl, account, input) {
       address: myAccount.address,
       intents: [{
         assetId: Neon.CONST.ASSET_ID[input.assetType],
-        value: parseFloat(input.amount),
+        value: toNumber(input.amount),
         scriptHash: input.scriptHash,
       }],
       script: { scriptHash: input.scriptHash, operation: input.operation, args: args },
