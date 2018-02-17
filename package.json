@@ -12,7 +12,7 @@
     "lintFix": "eslint ./ --fix",
     "start": "node utils/webserver.js",
     "test": "jest",
-    "test-ci": "yarn test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "test-ci": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "prepush": "echo 'running lint...' && npm run lint && echo 'running tests...' && npm test"
   },
   "devDependencies": {
