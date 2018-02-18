@@ -66,7 +66,7 @@ export default class SendInvokeReadonly extends Component {
         console.log('e', e)
         this.setState({
           loading: false,
-          errorMsg: 'Invoke failed',
+          errorMsg: `Invoke failed: ${e.message}`,
         })
       })
   }

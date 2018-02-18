@@ -27,7 +27,7 @@ class Home extends Component {
   handleClick = (e) => {
     const { actions } = this.props
     e.preventDefault()
-    actions.setAccount('')
+    actions.setAccount('', '')
   }
 
   render() {
