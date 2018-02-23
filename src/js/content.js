@@ -3,23 +3,22 @@
 
 // Listen for messages from the page to do smart contract invocations.
 window.addEventListener('message', (event) => {
+  const { source, data } = event
+
   // We only accept messages from ourselves
-  if (event.source !== window) {
+  if (source !== window) {
     return
   }
 
-  if (event.data.type && (event.data.type === 'NEOLINK_GET_EXTENSION_STATUS')) {
+  const { type } = data
+
+  if (type === 'NEOLINK_GET_EXTENSION_STATUS') {
     getExtensionStatus()
   }
 
   // TODO: this should first do a test to determine gas cost and THEN do send
-  if (event.data.type && (event.data.type === 'NEOLINK_SEND_INVOKE')) {
-    let scriptHash = event.data.text.scriptHash
-    let operation = event.data.text.operation
-    let assetType = event.data.text.assetType
-    let assetAmount = event.data.text.assetAmount
-    let arg1 = event.data.text.arg1
-    let arg2 = event.data.text.arg2
+  if (type === 'NEOLINK_SEND_INVOKE') {
+    const { scriptHash, operation, assetType, assetAmount, arg1, arg2 } = data.text
 
     // Send an invoke to the extension background page.
     sendInvoke(scriptHash, operation, arg1, arg2, assetType, assetAmount)
