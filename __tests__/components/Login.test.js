@@ -1,15 +1,26 @@
 import React from 'react'
+import { Provider } from 'react-redux'
+import { mount } from 'enzyme'
+import { createStore, combineReducers } from 'redux'
+import { reducer as formReducer } from 'redux-form'
 
-import { shallow, mount } from 'enzyme'
-
-import Login from '../../src/app/components/Login/Login'
+import LoginForm, { Login } from '../../src/app/components/Login/Login'
 import Loader from '../../src/app/components/Loader'
 
 describe('Login', () => {
-  test('shows loading', () => {
-    const wrapper = shallow(<Login setAccount={ jest.fn } account={ { wif: '' } } />)
-    wrapper.setState({ loading: true })
-    expect(wrapper.find(Loader).length).toEqual(1)
+  let store
+
+  beforeEach(() => {
+    store = createStore(combineReducers({ form: formReducer }))
+  })
+
+  test('shows loading', (done) => {
+    const loginForm = mount(<Provider store={ store }><LoginForm setAccount={ jest.fn } account={ { wif: '' } } /></Provider>)
+    loginForm.find(Login).instance().setState({ loading: true }, () => {
+      loginForm.update()
+      expect(loginForm.find(Loader).length).toEqual(1)
+      done()
+    })
   })
 
   test('Returns null if already logged in', () => {
@@ -18,8 +29,8 @@ describe('Login', () => {
       address: 'AQg2xUAPpA21FZMw44cpErGWekx3Hw8neA',
     }
 
-    const wrapper = shallow(<Login setAccount={ jest.fn } account={ preLoggedIn } />)
-    expect(wrapper.html()).toEqual(null)
+    const loginForm = mount(<Provider store={ store }><LoginForm setAccount={ jest.fn } account={ preLoggedIn } /></Provider>)
+    expect(loginForm.html()).toEqual(null)
   })
 
   test('Logs in with valid credentials', (done) => {
@@ -28,21 +39,16 @@ describe('Login', () => {
     const expectedAddress = 'AQg2xUAPpA21FZMw44cpErGWekx3Hw8neA'
     const expectedWif = 'L3moZFQgcpyznreRqbR1uVcvrkARvRqJS4ttGfMdXGaQQR5DeYcZ'
 
-    const preventDefault = jest.fn()
-
     const setAccount = jest.fn((wif, address) => {
       expect(wif).toEqual(expectedWif)
       expect(address).toEqual(expectedAddress)
-      expect(preventDefault).toHaveBeenCalled()
       done()
     })
 
-    const wrapper = mount(<Login setAccount={ setAccount } account={ { wif: '' } } />)
-
-    wrapper.find('input#encryptedWif').simulate('change', { target: { id: 'encryptedWif', value: encryptedKey } })
-    wrapper.find('input#passPhrase').simulate('change', { target: { id: 'passPhrase', value: password } })
-    wrapper.find('button').simulate('click')
-    wrapper.find('form').simulate('submit', { preventDefault })
+    const loginForm = mount(<Provider store={ store }><LoginForm setAccount={ setAccount } account={ { wif: '' } } /></Provider>)
+    loginForm.find('input[name="encryptedWif"]').simulate('change', { target: { name: 'encryptedWif', value: encryptedKey } })
+    loginForm.find('input[name="passPhrase"]').simulate('change', { target: { name: 'passPhrase', value: password } })
+    loginForm.find('button').simulate('click')
   })
 
   test('Shows error with invalid credentials', () => {
@@ -51,16 +57,15 @@ describe('Login', () => {
     const encryptedKey = '6PYKu5U41eVSiym4getQWsfUycsWBHNUR9LmajHisK9FqWSqvfuhsqqaY9'
     const password = 'wrong'
 
-    const wrapper = mount(<Login setAccount={ jest.fn() } account={ { wif: '' } } />)
-
-    wrapper.find('input#encryptedWif').simulate('change', { target: { id: 'encryptedWif', value: encryptedKey } })
-    wrapper.find('input#passPhrase').simulate('change', { target: { id: 'passPhrase', value: password } })
-    wrapper.find('button').simulate('click')
-    wrapper.find('form').simulate('submit', { preventDefault: jest.fn() })
+    const loginForm = mount(<Provider store={ store }><LoginForm setAccount={ jest.fn() } account={ { wif: '' } } /></Provider>)
+    loginForm.find('input[name="encryptedWif"]').simulate('change', { target: { id: 'encryptedWif', value: encryptedKey } })
+    loginForm.find('input[name="passPhrase"]').simulate('change', { target: { id: 'passPhrase', value: password } })
+    loginForm.find('button').simulate('click')
 
     jest.runAllTimers()
 
-    expect(wrapper.state().errorMsg).not.toEqual('')
-    expect(wrapper.text().includes(wrapper.state().errorMsg)).toEqual(true)
+    const loginState = loginForm.find(Login).instance().state
+    expect(loginState.errorMsg).not.toEqual('')
+    expect(loginForm.text().includes(loginState.errorMsg)).toEqual(true)
   })
 })
