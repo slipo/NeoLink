@@ -13,7 +13,7 @@ const enhancer = compose(
 )
 
 export default function (initialState) {
-  if (initialState.router.location) {
+  if (initialState.router && initialState.router.location) {
     history.location = initialState.router.location
   }
 
