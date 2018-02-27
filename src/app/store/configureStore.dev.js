@@ -22,7 +22,7 @@ const enhancer = composeEnhancers(
 )
 
 export default function (initialState) {
-  if (initialState.router.location) {
+  if (initialState.router && initialState.router.location) {
     history.location = initialState.router.location
   }
   const store = createStore(rootReducer, initialState, enhancer)
