@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { BrowserRouter } from 'react-router-dom'
+import { ConnectedRouter } from 'react-router-redux'
+import { history } from '../app/store/configureStore'
 import { Provider } from 'react-redux'
 import App from './containers/App'
 import PopupWindow from './containers/PopupWindow'
@@ -10,12 +11,12 @@ export default class Root extends Component {
     const { store, isPopupWindow } = this.props
     return (
       <Provider store={ store }>
-        <BrowserRouter>
+        <ConnectedRouter history={ history }>
           { isPopupWindow
             ? <PopupWindow />
             : <App />
           }
-        </BrowserRouter>
+        </ConnectedRouter>
       </Provider>
     )
   }

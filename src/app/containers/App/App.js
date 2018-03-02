@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import Home from '../Home'
 import Send from '../Send'
@@ -17,13 +18,17 @@ import ContentWrapper from '../../components/ContentWrapper'
 
 import style from './App.css'
 
+const ConnectedSwitch = connect(state => ({
+  location: state.router.location,
+}))(Switch)
+
 export default class App extends Component {
   render () {
     return (
       <div className={ style.popup }>
         <Header />
         <ContentWrapper>
-          <Switch>
+          <ConnectedSwitch>
             <Route path='/send' component={ Send } />
             <Route path='/testInvoke' component={ TestInvoke } />
             <Route path='/sendInvoke' component={ SendInvoke } />
@@ -34,7 +39,7 @@ export default class App extends Component {
             <Route path='/exportWallet' component={ ExportWallet } />
             <Route path='/config' component={ Config } />
             <Route path='/' component={ Home } />
-          </Switch>
+          </ConnectedSwitch>
         </ContentWrapper>
       </div>
     )

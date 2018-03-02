@@ -5,8 +5,7 @@ import Root from '../app/Root'
 chrome.storage.local.get('state', (obj) => {
   const { state } = obj
   const initialState = JSON.parse(state || '{}')
-
-  const createStore = require('../app/store/configureStore')
+  const createStore = require('../app/store/configureStore').default
 
   const container = document.querySelector('#container')
   const isPopupWindow = container.classList.contains('popup')
