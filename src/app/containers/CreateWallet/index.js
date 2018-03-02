@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+<<<<<<< HEAD
 import { wallet } from '@cityofzion/neon-js'
 
 import { Button } from 'rmwc/Button'
@@ -6,12 +7,9 @@ import { TextField } from 'rmwc/TextField'
 import '@material/button/dist/mdc.button.min.css'
 import '@material/textfield/dist/mdc.textfield.min.css'
 
-<<<<<<< HEAD
 import style from './CreateWallet.css'
-=======
 import globalStyle from '../../components/ContentWrapper/ContentWrapper.css'
 import Loader from '../../components/Loader'
->>>>>>> b72d78396e35a7d7ee0915ba45a919caa3b47e19
 
 export default class CreateWallet extends Component {
   state = {
@@ -34,7 +32,6 @@ export default class CreateWallet extends Component {
     event.preventDefault()
 
     const { passPhrase } = this.state
-<<<<<<< HEAD
 
     this.setState({
       loading: true,
@@ -42,15 +39,12 @@ export default class CreateWallet extends Component {
     })
 
     console.log(this.state.passPhrase)
-=======
->>>>>>> b72d78396e35a7d7ee0915ba45a919caa3b47e19
 
     if (this.state.passPhrase !== this.state.passPhraseConfirm) {
       this.setState({
         loading: false,
         errorMsg: 'Passphrases do not match.',
       })
-<<<<<<< HEAD
     } else {
       console.log('generating new wallet')
       // Make wallet.decrypt() async.
@@ -75,7 +69,6 @@ export default class CreateWallet extends Component {
           this.setState({ loading: false, errorMsg: e.message })
         }
       }, 500)
-=======
 
       return
     }
@@ -87,7 +80,6 @@ export default class CreateWallet extends Component {
       })
 
       return
->>>>>>> b72d78396e35a7d7ee0915ba45a919caa3b47e19
     }
 
     this.setState({
@@ -114,6 +106,7 @@ export default class CreateWallet extends Component {
     }, 500)
   }
 
+export default class CreateWallet extends Component {
   render() {
     const { loading, errorMsg, passPhrase, passPhraseConfirm, encryptedWif, address } = this.state
 
@@ -151,14 +144,8 @@ export default class CreateWallet extends Component {
           />
           <div>
             <Button raised ripple>Create Wallet</Button>
-<<<<<<< HEAD
-
-=======
->>>>>>> b72d78396e35a7d7ee0915ba45a919caa3b47e19
           </div>
         </form>
-
-<<<<<<< HEAD
           {this.state.encryptedWif &&
             <div>
               <div>Encrypted WIF: {this.state.encryptedWif}</div>
@@ -177,13 +164,15 @@ export default class CreateWallet extends Component {
           {this.state.loading === true &&
             <div>loading...</div>
           }
-=======
         <div className='content'>
->>>>>>> b72d78396e35a7d7ee0915ba45a919caa3b47e19
           {this.state.errorMsg !== '' &&
             <div>ERROR: {errorMsg}</div>
           }
         </div>
+      <div className='content'>
+        <p className='card-title'>Create Wallet</p>
+        <button id='createWallet'>Create Wallet</button>
+        <div id='modalContent' />
       </div>
     )
   }
