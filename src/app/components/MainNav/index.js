@@ -48,7 +48,10 @@ class MainNav extends Component {
               Balance
             </MenuItem>
             <MenuItem className={ style.menuItem } onClick={ () => history.push('/createWallet') }>
-              Create Wallet
+              Create Account
+            </MenuItem>
+            <MenuItem className={ style.menuItem } onClick={ () => history.push('/newAccountFromWIF') }>
+              Create Account from WIF
             </MenuItem>
             <MenuItem className={ style.menuItem } onClick={ () => history.push('/importWallet') }>
               Import Wallet
