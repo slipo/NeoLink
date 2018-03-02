@@ -15,7 +15,7 @@ export function callInvoke (networkUrl, account, input) {
       reject(new Error('Invalid asset type specified'))
     }
 
-    const txArgs = input.args
+    const txArgs = [input.arg1, input.arg2]
     const args = []
     txArgs.forEach((arg) => {
       if (arg) {
