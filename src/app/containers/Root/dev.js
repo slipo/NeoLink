@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'react-router-redux'
-import DevTools from '../DevTools';
+import DevTools from '../DevTools'
 import App from '../App'
 import PopupWindow from '../PopupWindow'
 import { history } from '../../store/configureStore'
