@@ -1,7 +1,9 @@
 import { applyMiddleware, createStore, compose } from 'redux'
+import { persistState } from 'redux-devtools';
 import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
 import storage from '../utils/storage'
+import DevTools from '../containers/DevTools';
 import createHistory from 'history/createBrowserHistory'
 import { routerMiddleware } from 'react-router-redux'
 
@@ -18,8 +20,17 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 
 const enhancer = composeEnhancers(
   applyMiddleware(...[ thunk, routerMiddleware(history) ]),
-  storage()
+  storage(),
+  DevTools.instrument(),
+  persistState(getDebugSessionKey())
 )
+
+function getDebugSessionKey() {
+  // By default we try to read the key from ?debug_session=<key> in the address bar
+  const matches = window.location.href.match(/[?&]debug_session=([^&#]+)\b/);
+  return (matches && matches.length > 0)? matches[1] : null;
+}
+
 
 export default function (initialState) {
   if (initialState.router && initialState.router.location) {
