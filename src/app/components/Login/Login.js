@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { wallet } from '@cityofzion/neon-js'
 import { Field, reduxForm } from 'redux-form'
+// import { withRouter } from 'react-router-dom'
 
 import { Button } from 'rmwc/Button'
 import { TextField } from 'rmwc/TextField'
@@ -21,29 +22,16 @@ export class Login extends Component {
     passPhrase: '',
   }
 
-  _renderTextField = ({
-    input,
-    ...rest
-  }) => (
-    <TextField
-      { ...input }
-      { ...rest }
-      onChange={ (event) => input.onChange(event.target.value) }
-    />
+  _renderTextField = ({ input, ...rest }) => (
+    <TextField { ...input } { ...rest } onChange={ event => input.onChange(event.target.value) } />
   )
 
-  _renderSelectField = ({
-    input,
-    ...rest
-  }) => (
-    <Select
-      { ...input }
-      { ...rest }
-      onChange={ (event) => input.onChange(event.target.value) }
-    />
+  _renderSelectField = ({ input, ...rest }) => (
+    <Select { ...input } { ...rest } onChange={ event => input.onChange(event.target.value) } />
   )
 
   handleSubmit = (values, dispatch, formProps) => {
+    const { history } = this.props
     const { reset } = formProps
     const encryptedWif = values.encryptedWif
     const passPhrase = values.passPhrase
@@ -63,6 +51,8 @@ export class Login extends Component {
         this.setState({ loading: false })
         reset()
         setAccount(wif, account.address)
+
+        history.push('/home')
       } catch (e) {
         this.setState({ loading: false, errorMsg: e.message })
       }
@@ -70,9 +60,9 @@ export class Login extends Component {
   }
 
   getAccountOptions(accounts) {
-    const options = [ { label: 'Select', value: '' } ]
+    const options = [{ label: 'Select', value: '' }]
 
-    Object.keys(accounts).forEach((index) => {
+    Object.keys(accounts).forEach(index => {
       const account = accounts[index]
       options.push({ label: account.label, value: account.key })
     })
@@ -85,24 +75,21 @@ export class Login extends Component {
     const { accounts, account, handleSubmit } = this.props
 
     if (loading) {
-      return (
-        <Loader />
-      )
+      return <Loader />
     }
     if (account.wif !== '') {
       return null
     }
 
     if (Object.keys(accounts).length === 0) {
-      return (
-        <CreateOrImportWallet />
-      )
+      return <CreateOrImportWallet />
     }
 
     return (
       <div>
         <form onSubmit={ handleSubmit(this.handleSubmit) }>
-          <Field label='Account'
+          <Field
+            label='Account'
             component={ this._renderSelectField }
             cssOnly
             name='encryptedWif'
@@ -116,12 +103,12 @@ export class Login extends Component {
             id='passPhrase'
           />
           <div>
-            <Button raised ripple onClick={ handleSubmit(this.handleSubmit) }>Login</Button>
+            <Button raised ripple onClick={ handleSubmit(this.handleSubmit) }>
+              Login
+            </Button>
           </div>
         </form>
-        {errorMsg !== '' &&
-          <div>ERROR: {errorMsg}</div>
-        }
+        {errorMsg !== '' && <div>ERROR: {errorMsg}</div>}
       </div>
     )
   }
@@ -133,6 +120,7 @@ Login.propTypes = {
   accounts: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
+  history: PropTypes.object,
 }
 
 export default reduxForm({ form: 'login', destroyOnUnmount: false })(Login)
