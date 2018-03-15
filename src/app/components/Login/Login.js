@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { wallet } from '@cityofzion/neon-js'
 import { Field, reduxForm } from 'redux-form'
-// import { withRouter } from 'react-router-dom'
 
 import { Button } from 'rmwc/Button'
 import { TextField } from 'rmwc/TextField'
@@ -11,8 +10,8 @@ import '@material/button/dist/mdc.button.min.css'
 import '@material/textfield/dist/mdc.textfield.min.css'
 import '@material/select/dist/mdc.select.min.css'
 
-import CreateOrImportWallet from '../CreateOrImportWallet'
 import Loader from '../Loader'
+import StartPage from '../StartPage'
 
 export class Login extends Component {
   state = {
@@ -51,7 +50,6 @@ export class Login extends Component {
         this.setState({ loading: false })
         reset()
         setAccount(wif, account.address)
-
         history.push('/home')
       } catch (e) {
         this.setState({ loading: false, errorMsg: e.message })
@@ -82,7 +80,7 @@ export class Login extends Component {
     }
 
     if (Object.keys(accounts).length === 0) {
-      return <CreateOrImportWallet />
+      return <StartPage />
     }
 
     return (
