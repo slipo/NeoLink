@@ -12,12 +12,10 @@ import CreateWallet from '../CreateWallet'
 import ImportWallet from '../ImportWallet'
 import ExportWallet from '../ExportWallet'
 import Config from '../Config'
-
+import ContentWrapper from '../../components/ContentWrapper'
 import StartPage from '../../components/StartPage'
 import Login from '../../components/Login'
-
 import Header from '../../components/Header'
-import ContentWrapper from '../../components/ContentWrapper'
 
 import style from './App.css'
 

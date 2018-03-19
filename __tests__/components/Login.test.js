@@ -76,11 +76,13 @@ describe('Login', () => {
         <LoginForm setAccount={ setAccount } account={ { wif: '' } } accounts={ validAccount } />
       </Provider>
     )
+
     loginForm
       .find('input[name="passPhrase"]')
       .simulate('change', { target: { name: 'passPhrase', value: validPassword } })
     loginForm.find('select').simulate('change', { target: { value: validEncryptedKey } })
-    loginForm.find('button').simulate('click')
+
+    loginForm.find('form').simulate('submit')
   })
 
   test('Shows error with invalid credentials', () => {
@@ -93,7 +95,7 @@ describe('Login', () => {
     )
     loginForm.find('input[name="passPhrase"]').simulate('change', { target: { id: 'passPhrase', value: 'wrong' } })
     loginForm.find('select').simulate('change', { target: { value: validEncryptedKey } })
-    loginForm.find('button').simulate('click')
+    loginForm.find('form').simulate('submit')
 
     jest.runAllTimers()
 
