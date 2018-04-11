@@ -56,7 +56,7 @@ export default class Balance extends Component {
       address: '',
     })
 
-    api.networks[selectedNetworkId].apiType
+    api[networks[selectedNetworkId].apiType]
       .getBalance(networks[selectedNetworkId]['url'], this.state.balanceAddress)
       .then(result => {
         this.setState({
