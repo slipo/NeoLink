@@ -12,6 +12,10 @@ const actionCreators = {
   setAccount,
 }
 
+const mapStateToProps = state => ({
+  accounts: state.wallet.accounts,
+})
+
 const mapDispatchToProps = dispatch => bindActionCreators(actionCreators, dispatch)
 
-export default withRouter(connect(null, mapDispatchToProps)(CreateWallet))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateWallet))
